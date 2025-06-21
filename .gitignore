@@ -1,5 +1,5 @@
 # Dependencies
-node_modules/
+/frontend/node_modules/
 */node_modules/
 
 # Production builds
@@ -8,14 +8,19 @@ node_modules/
 /frontend/build/
 
 # .NET Core
-*/bin/
-*/obj/
+/backend/src/Core/Core/bin/
+/backend/src/Core/Core/obj/
+/backend/src/WebApi/WebApi/bin/
+/backend/src/WebApi/WebApi/obj/
 *.dll
 *.exe
 *.pdb
 *.cache
 *.deps.json
 *.runtimeconfig.json
+*.user
+*.suo
+*.sln.docstates
 
 # Environment variables
 .env

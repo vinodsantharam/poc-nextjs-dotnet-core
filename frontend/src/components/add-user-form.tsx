@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { userFormSchema, createUser } from "@/lib/api/actions";
 
 export function AddUserForm({ setOpen }: { setOpen: (open: boolean) => void }) {
+  const router = useRouter();
   const form = useForm<z.infer<typeof userFormSchema>>({
     resolver: zodResolver(userFormSchema),
     defaultValues: {
@@ -31,8 +33,7 @@ export function AddUserForm({ setOpen }: { setOpen: (open: boolean) => void }) {
       await createUser(values);
       toast.success("User created successfully!");
       form.reset();
-      // Optional: you can add a router refresh here if you want the user list to update automatically
-      // useRouter().refresh(); 
+      router.refresh();
       setOpen(false); // Close the dialog on success
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "An unknown error occurred.");
