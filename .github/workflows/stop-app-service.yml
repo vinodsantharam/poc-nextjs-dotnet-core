@@ -1,0 +1,22 @@
+name: Stop Azure App Service Daily
+
+on:
+  schedule:
+    # Runs at 10:00 PM UTC every day. You can adjust the cron schedule to your timezone.
+    - cron: '0 22 * * *'
+  workflow_dispatch:
+
+jobs:
+  stop_app:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Log in to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Stop App Service
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          az webapp stop --name app-poc-nextjs-dotnet-3164 --resource-group rg-poc-nextjs-dotnet 

@@ -1,0 +1,22 @@
+name: Start Azure App Service Daily
+
+on:
+  schedule:
+    # Runs at 10:00 AM UTC every day. You can adjust the cron schedule to your timezone.
+    - cron: '0 10 * * *'
+  workflow_dispatch:
+
+jobs:
+  start_app:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Log in to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Start App Service
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          az webapp start --name app-poc-nextjs-dotnet-3164 --resource-group rg-poc-nextjs-dotnet 
