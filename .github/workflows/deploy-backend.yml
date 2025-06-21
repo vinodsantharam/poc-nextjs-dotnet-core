@@ -1,0 +1,48 @@
+name: Deploy .NET Backend to Azure App Service
+
+on:
+  push:
+    branches:
+      - main
+    # Only run this workflow if files in the 'backend' directory change
+    paths:
+      - 'backend/**'
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: 'app-poc-nextjs-dotnet-3164'   # Name of the web app created
+  DOTNET_VERSION: '8.0.x'                           # Target .NET version
+  PROJECT_PATH: 'backend/src/WebApi/WebApi/WebApi.csproj'  # Path to the .NET project file
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          include-prerelease: true
+
+      - name: Restore, Build, and Publish
+        run: dotnet publish ${{ env.PROJECT_PATH }} --configuration Release --output ./publish
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          slot-name: 'production'
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
+          package: './publish'
+
+      - name: Logout from Azure
+        if: always()
+        run: |
+          az logout
+          az cache purge
+          az account clear
+        continue-on-error: true 
