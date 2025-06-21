@@ -1,4 +1,5 @@
 import type { User } from '@/lib/api/types';
+import { AddUserDialog } from '@/components/add-user-dialog';
 
 async function getUsers(): Promise<User[]> {
   // This runs on the server side
@@ -40,7 +41,10 @@ export default async function UsersPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Users</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Users</h1>
+        <AddUserDialog />
+      </div>
       {users && users.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {users.map((user: User) => (
