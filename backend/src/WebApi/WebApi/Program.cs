@@ -23,6 +23,9 @@ builder.Services.AddCors(options =>
 // Register services
 builder.Services.AddScoped<IUserService, UserService>();
 
+// Add health checks
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,5 +40,8 @@ app.UseCors("NextJSPolicy");
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Map health check endpoint
+app.MapHealthChecks("/health");
 
 app.Run();
