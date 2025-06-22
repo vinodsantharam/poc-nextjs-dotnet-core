@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { fetchFromApi } from '@/lib/api/server';
 import { API_ENDPOINTS } from '@/lib/api/config';
-import type { User } from '@/lib/api/types';
+import type { User, NewUser } from '@/lib/api/types';
 
 // GET all users
 export async function GET() {
@@ -17,7 +17,7 @@ export async function GET() {
 // POST a new user
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    const body: NewUser = await request.json();
     const result = await fetchFromApi<User>(API_ENDPOINTS.users, {
       method: 'POST',
       headers: {

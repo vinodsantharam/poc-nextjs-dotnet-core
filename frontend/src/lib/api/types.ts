@@ -15,7 +15,10 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  createdAt: string;
 }
+
+export type NewUser = Pick<User, 'name' | 'email'>;
 
 export interface Post {
   id: string;
